@@ -67,14 +67,22 @@ class ProductList {
 class Cart {
   items = [];
 
-  addItem(product) {
-    this.items.push(product);
-    this.totalAmountElement.innerHTML = `<h2>Total: \$${this.calculateTotalPrice().toFixed(2)}</h2>`;
+  set cartItems(value) {
+    this.items = value;
+    this.totalAmountElement.innerHTML = `<h2>Total: \$${this.totalPrice.toFixed(
+      2
+    )}</h2>`;
   }
 
-  calculateTotalPrice() {
-    const totalPrice = this.items.reduce((accumulator, currentValue) => accumulator + currentValue.price, 0);
-    return totalPrice;
+  get totalPrice() {
+    return this.items.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.price,
+      0
+    );
+  }
+
+  addItem(product) {
+    this.cartItems = [...this.items, product];
   }
 
   render() {
