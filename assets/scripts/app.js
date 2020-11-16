@@ -147,7 +147,7 @@ class Shop {
   render() {
     const renderHook = document.getElementById("app");
 
-    new Cart('app'); // render() will be called everytime an instance is created
+    this.cart = new Cart('app'); // render() will be called everytime an instance is created
 
     new ProductList('app');
   }
