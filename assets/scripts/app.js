@@ -17,7 +17,10 @@ class ElementAttribute {
 class Component {
   constructor(renderHookId) {
     this.renderHookId = renderHookId;
+    this.render();
   }
+
+  render() {}
 
   createRootElement(elementTag, cssClassName, attributes) {
     const rootElement = document.createElement(elementTag);
@@ -38,14 +41,17 @@ class Component {
 class ProductItem extends Component {
   constructor(product, renderHookId) {
     super(renderHookId);
-    this.product = product;
+    this.renderProduct(product);
   }
 
   addToCart() {
     App.addProductToCart(this.product);
   }
 
-  render() {
+  render() {}
+
+  renderProduct(product) {
+    this.product = product;
     const productElement = this.createRootElement("li", "product-item");
     productElement.innerHTML = `
         <div>
@@ -64,28 +70,40 @@ class ProductItem extends Component {
 }
 
 class ProductList extends Component {
-  products = [
-    new Product(
-      "A Pillow",
-      "https://www.maxpixels.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg",
-      "A soft pillow!",
-      19.99
-    ),
-    new Product(
-      "A Carpet",
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ardabil_Carpet.jpg/397px-Ardabil_Carpet.jpg",
-      "A carpet which you might like - or not.",
-      89.99
-    ),
-  ];
+  products = [];
+
+  constructor(renderHookId) {
+    super(renderHookId);
+    this.fetchProducts();
+  }
+
+  fetchProducts() {
+    this.products = [
+      new Product(
+        "A Pillow",
+        "https://www.maxpixels.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg",
+        "A soft pillow!",
+        19.99
+      ),
+      new Product(
+        "A Carpet",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Ardabil_Carpet.jpg/397px-Ardabil_Carpet.jpg",
+        "A carpet which you might like - or not.",
+        89.99
+      ),
+    ];
+    this.renderProducts();
+  }
 
   render() {
     // create product list component
     this.createRootElement("ul", "product-list", [new ElementAttribute('id', 'prod-list')]);
+  }
+
+  renderProducts() {
     // pass the id of the product list component to each product item component as the renderHookId
     for (const product of this.products) {
-      const productItem = new ProductItem(product, 'prod-list');
-      productItem.render();
+      new ProductItem(product, 'prod-list');
     }
   }
 }
@@ -129,11 +147,9 @@ class Shop {
   render() {
     const renderHook = document.getElementById("app");
 
-    this.cart = new Cart('app');
-    this.cart.render();
+    new Cart('app'); // render() will be called everytime an instance is created
 
-    const productList = new ProductList('app');
-    productList.render();
+    new ProductList('app');
   }
 }
 
