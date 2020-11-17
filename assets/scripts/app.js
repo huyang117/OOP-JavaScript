@@ -15,9 +15,11 @@ class ElementAttribute {
 }
 
 class Component {
-  constructor(renderHookId) {
+  constructor(renderHookId, shouldRender = true) {
     this.renderHookId = renderHookId;
-    this.render();
+    if (shouldRender) {
+      this.render();
+    }
   }
 
   render() {}
@@ -97,13 +99,15 @@ class ProductList extends Component {
 
   render() {
     // create product list component
-    this.createRootElement("ul", "product-list", [new ElementAttribute('id', 'prod-list')]);
+    this.createRootElement("ul", "product-list", [
+      new ElementAttribute("id", "prod-list"),
+    ]);
   }
 
   renderProducts() {
     // pass the id of the product list component to each product item component as the renderHookId
     for (const product of this.products) {
-      new ProductItem(product, 'prod-list');
+      new ProductItem(product, "prod-list");
     }
   }
 }
@@ -112,7 +116,12 @@ class Cart extends Component {
   items = [];
 
   constructor(renderHookId) {
-    super(renderHookId);
+    super(renderHookId, false);
+    this.orderProducts = () => {
+      console.log("Ordering...");
+      console.log(this.items);
+    };
+    this.render();
   }
 
   set cartItems(value) {
@@ -133,11 +142,6 @@ class Cart extends Component {
     this.cartItems = [...this.items, product];
   }
 
-  orderProducts() {
-    console.log('Ordering...');
-    console.log(this.items);
-  }
-
   render() {
     const cartElement = this.createRootElement("section", "cart");
     cartElement.innerHTML = `
@@ -145,8 +149,8 @@ class Cart extends Component {
       <button>Place Order</button>
     `;
     this.totalAmountElement = cartElement.querySelector("h2");
-    const orderButton = cartElement.querySelector('button');
-    orderButton.addEventListener('click', this.orderProducts.bind(this));
+    const orderButton = cartElement.querySelector("button");
+    orderButton.addEventListener("click", this.orderProducts.bind(this));
   }
 }
 
@@ -154,9 +158,9 @@ class Shop {
   render() {
     const renderHook = document.getElementById("app");
 
-    this.cart = new Cart('app'); // render() will be called everytime an instance is created
+    this.cart = new Cart("app"); // render() will be called everytime an instance is created
 
-    new ProductList('app');
+    new ProductList("app");
   }
 }
 
