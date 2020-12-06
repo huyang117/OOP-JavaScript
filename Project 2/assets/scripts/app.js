@@ -1,3 +1,10 @@
+class DOMUtil {
+  static addProjectToList(project, destinationSelector) {
+    const newDestination = document.querySelector(destinationSelector);
+    newDestination.append(project);
+  }
+}
+
 class Tooltip {}
 
 class ProjectItem {
@@ -52,7 +59,8 @@ class ProjectsList {
   }
 
   addProject(targetProject) {
-    document.querySelector(`#${this.listType}-projects`).append(targetProject);
+    this.projects = this.projects.concat(targetProject.id);
+    DOMUtil.addProjectToList(targetProject, `#${this.listType}-projects ul`);
   }
 
   switchProject(projectId) {
