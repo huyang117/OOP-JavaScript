@@ -51,10 +51,8 @@ class ProjectsList {
     this.changeOtherList = changeOtherListFunction;
   }
 
-  addProject(listType, targetProject) {
-    console.log(targetProject);
-    const otherProjectList = document.querySelector(`#${listType}-projects`);
-    otherProjectList.append(targetProject);
+  addProject(targetProject) {
+    document.querySelector(`#${this.listType}-projects`).append(targetProject);
   }
 
   switchProject(projectId) {
@@ -78,10 +76,10 @@ class App {
     const finishedPjtList = new ProjectsList("finished");
 
     activePjtList.setChangeOtherListFunction(
-      finishedPjtList.addProject.bind(finishedPjtList, "finished")
+      finishedPjtList.addProject.bind(finishedPjtList)
     );
     finishedPjtList.setChangeOtherListFunction(
-      activePjtList.addProject.bind(activePjtList, "active")
+      activePjtList.addProject.bind(activePjtList)
     );
   }
 }
