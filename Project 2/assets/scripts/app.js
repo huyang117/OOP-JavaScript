@@ -1,7 +1,13 @@
 class DOMUtil {
+  static clearEventListener(element) {
+    const clonedEl = element.cloneNode(true);
+    element.replaceWith(clonedEl);
+    return clonedEl;
+  }
   static addProjectToList(project, destinationSelector) {
+    const targetProject = document.getElementById(project.id);
     const newDestination = document.querySelector(destinationSelector);
-    newDestination.append(project);
+    newDestination.append(targetProject);
   }
 }
 
@@ -24,19 +30,16 @@ class ProjectItem {
   }
 
   connectSwitchBtn() {
-    const switchBtn = this.projectItemElement.querySelector(
+    let switchBtn = this.projectItemElement.querySelector(
       "button:last-of-type"
     );
-    switchBtn.addEventListener("click", this.handleSwitch.bind(this));
+    switchBtn = DOMUtil.clearEventListener(switchBtn);
+    switchBtn.addEventListener("click", this.switchProject.bind(null, this.id));
   }
 
-  handleSwitch() {
-    const switchBtn = this.projectItemElement.querySelector(
-      "button:last-of-type"
-    );
-    const btnText = switchBtn.innerHTML;
-    switchBtn.innerHTML = btnText === 'Finish' ? 'Activate' : 'Finish';
-    this.switchProject(this.id);
+  update(newEventListener) {
+    this.switchProject = newEventListener;
+    this.connectSwitchBtn();
   }
 }
 
@@ -59,15 +62,17 @@ class ProjectsList {
   }
 
   addProject(targetProject) {
-    this.projects = this.projects.concat(targetProject.id);
+    this.projects = this.projects.concat(targetProject);
     DOMUtil.addProjectToList(targetProject, `#${this.listType}-projects ul`);
+    console.log(targetProject);
+    targetProject.update(this.switchProject.bind(this));
   }
 
   switchProject(projectId) {
     // targetProject is the project to be removed from current project list
     // and to be added to the other project list
     console.log(projectId);
-    const targetProject = Array.from(this.projectItems).find(
+    const targetProject = this.projects.find(
       (p) => p.id === projectId
     );
 
