@@ -157,8 +157,20 @@ class Tooltip extends Component {
     const tooltipEl = document.createElement("div");
     tooltipEl.textContent = this.content;
     tooltipEl.className = "card";
-    tooltipEl.addEventListener("click", this.closeTooltip.bind(this));
 
+    const hostElPosLeft = this.hostElement.offsetLeft;
+    const hostElPosTop = this.hostElement.offsetTop;
+    const hostElHeight = this.hostElement.clientHeight;
+    const parentElementScrolling = this.hostElement.parentElement.scrollTop;
+
+    const x = hostElPosLeft + 20;
+    const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
+
+    tooltipEl.style.position='absolute';
+    tooltipEl.style.left = x + 'px';
+    tooltipEl.style.top = y + 'px';
+
+    tooltipEl.addEventListener("click", this.closeTooltip.bind(this));
     this.tooltipElement = tooltipEl;
   }
 }
