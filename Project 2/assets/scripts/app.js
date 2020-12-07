@@ -119,6 +119,15 @@ class DOMUtils {
 }
 
 class Tooltip {
+  constructor(tooltipClosedHandler) {
+    this.tooltipClosed = tooltipClosedHandler;
+  }
+
+  closeTooltip() {
+    this.detach();
+    this.tooltipClosed();
+  }
+
   detach() {
     this.tooltipElement.remove();
   }
@@ -127,7 +136,7 @@ class Tooltip {
     const tooltipEl = document.createElement('div');
     tooltipEl.textContent = 'dummy tooltip';
     tooltipEl.className = 'card';
-    tooltipEl.addEventListener('click', this.detach.bind(this));
+    tooltipEl.addEventListener('click', this.closeTooltip.bind(this));
 
     this.tooltipElement = tooltipEl;
 
@@ -142,12 +151,18 @@ class ProjectItem {
     this.connectMoreInfoBtn();
     this.connectSwitchBtn(type);
 
-    this.switchProjectTriggered = switchProjectFunction;
+    this.switchProjectTriggered = switchProjectFunction; // receive from ProjectsList
+
+    this.hasActiveTooltip = false;
   }
 
   showTooltip() {
-    const tooltip = new Tooltip;
+    if (this.hasActiveTooltip) {
+      return;
+    }
+    const tooltip = new Tooltip(() => this.hasActiveTooltip = false);
     tooltip.attach();
+    this.hasActiveTooltip = true;
   }
 
   connectMoreInfoBtn() {
