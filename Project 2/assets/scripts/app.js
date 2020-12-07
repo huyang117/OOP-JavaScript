@@ -140,8 +140,8 @@ class Component {
 }
 
 class Tooltip extends Component {
-  constructor(tooltipClosedHandler, content) {
-    super();
+  constructor(tooltipClosedHandler, content, hostElementId) {
+    super(hostElementId);
     // super('active-projects', true);
     this.tooltipClosed = tooltipClosedHandler;
     this.content = content;
@@ -180,7 +180,11 @@ class ProjectItem {
       return;
     }
     const tooltipText = this.projectItemDomEl.dataset.extraInfo;
-    const tooltip = new Tooltip(() => (this.hasActiveTooltip = false), tooltipText);
+    const tooltip = new Tooltip(
+      () => (this.hasActiveTooltip = false),
+      tooltipText,
+      this.id
+    );
     tooltip.attach();
     this.hasActiveTooltip = true;
   }
