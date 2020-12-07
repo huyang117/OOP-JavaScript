@@ -118,9 +118,33 @@ class DOMUtils {
   }
 }
 
-class Tooltip {
+class Component {
+  constructor(hostElementId, insertBefore = false) {
+    this.hostElement = hostElementId
+      ? document.getElementById(hostElementId)
+      : document.body;
+
+    this.insertBefore = insertBefore;
+  }
+
+  detach() {
+    this.tooltipElement.remove();
+  }
+
+  attach() {
+    this.hostElement.insertAdjacentElement(
+      this.insertBefore ? "afterbegin" : "beforeend",
+      this.tooltipElement
+    );
+  }
+}
+
+class Tooltip extends Component {
   constructor(tooltipClosedHandler) {
+    super();
+    // super('active-projects', true);
     this.tooltipClosed = tooltipClosedHandler;
+    this.createTooltip();
   }
 
   closeTooltip() {
@@ -128,19 +152,13 @@ class Tooltip {
     this.tooltipClosed();
   }
 
-  detach() {
-    this.tooltipElement.remove();
-  }
-  
-  attach() {
-    const tooltipEl = document.createElement('div');
-    tooltipEl.textContent = 'dummy tooltip';
-    tooltipEl.className = 'card';
-    tooltipEl.addEventListener('click', this.closeTooltip.bind(this));
+  createTooltip() {
+    const tooltipEl = document.createElement("div");
+    tooltipEl.textContent = "dummy tooltip";
+    tooltipEl.className = "card";
+    tooltipEl.addEventListener("click", this.closeTooltip.bind(this));
 
     this.tooltipElement = tooltipEl;
-
-    document.body.appendChild(tooltipEl);
   }
 }
 
@@ -160,7 +178,7 @@ class ProjectItem {
     if (this.hasActiveTooltip) {
       return;
     }
-    const tooltip = new Tooltip(() => this.hasActiveTooltip = false);
+    const tooltip = new Tooltip(() => (this.hasActiveTooltip = false));
     tooltip.attach();
     this.hasActiveTooltip = true;
   }
