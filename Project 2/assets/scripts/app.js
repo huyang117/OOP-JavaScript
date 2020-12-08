@@ -105,7 +105,7 @@ class DOMUtils {
   static addProjectToList(projectId, destinationSelector) {
     const projectEl = document.getElementById(projectId);
     document.querySelector(destinationSelector).append(projectEl);
-    projectEl.scrollIntoView({behavior: 'smooth'});
+    projectEl.scrollIntoView({ behavior: "smooth" });
   }
 
   static clearEventListener(element) {
@@ -158,9 +158,9 @@ class Tooltip extends Component {
     const tooltipEl = document.createElement("div");
     tooltipEl.className = "card";
     // tooltipEl.textContent = this.content;
-    const tooltipTemplate = document.getElementById('tooltip');
+    const tooltipTemplate = document.getElementById("tooltip");
     const tooltipBody = document.importNode(tooltipTemplate.content, true);
-    tooltipBody.querySelector('p').textContent = this.content;
+    tooltipBody.querySelector("p").textContent = this.content;
     tooltipEl.append(tooltipBody);
 
     const hostElPosLeft = this.hostElement.offsetLeft;
@@ -171,9 +171,9 @@ class Tooltip extends Component {
     const x = hostElPosLeft + 20;
     const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
 
-    tooltipEl.style.position='absolute';
-    tooltipEl.style.left = x + 'px';
-    tooltipEl.style.top = y + 'px';
+    tooltipEl.style.position = "absolute";
+    tooltipEl.style.left = x + "px";
+    tooltipEl.style.top = y + "px";
 
     tooltipEl.addEventListener("click", this.closeTooltip.bind(this));
     this.tooltipElement = tooltipEl;
