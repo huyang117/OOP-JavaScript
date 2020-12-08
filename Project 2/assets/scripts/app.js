@@ -105,6 +105,7 @@ class DOMUtils {
   static addProjectToList(projectId, destinationSelector) {
     const projectEl = document.getElementById(projectId);
     document.querySelector(destinationSelector).append(projectEl);
+    projectEl.scrollIntoView({behavior: 'smooth'});
   }
 
   static clearEventListener(element) {
