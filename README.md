@@ -6,5 +6,6 @@
 
 ### Project 2
 
-- Use Vanilla JavaScript to communicate between DOM components
- (practice oop and callback functions)
+- Use Vanilla JavaScript to communicate between DOM components (practice oop and callback functions).
+
+- Play around with events and event listeners.
