@@ -35,3 +35,16 @@ button:active {
   border-color: #e92f6d;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.26);
 }
+
+li {
+  padding: 1em;
+  border: 1px solid #eee;
+}
+
+ul {
+  list-style: none;
+}
+
+.highlight {
+  background-color: #c8de97;
+}
