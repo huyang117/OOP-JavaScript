@@ -186,6 +186,7 @@ class ProjectItem {
     this.projectItemDomEl = document.getElementById(this.id);
     this.connectMoreInfoBtn();
     this.connectSwitchBtn(type);
+    this.connectDrag();
 
     this.switchProjectTriggered = switchProjectFunction; // receive from ProjectsList
 
@@ -204,6 +205,13 @@ class ProjectItem {
     );
     tooltip.attach();
     this.hasActiveTooltip = true;
+  }
+
+  connectDrag() {
+    this.projectItemDomEl.addEventListener("dragstart", (event) => {
+      event.dataTransfer.setData("text/plain", this.id);
+      event.dataTransfer.effectAllowed = "move";
+    });
   }
 
   connectMoreInfoBtn() {
@@ -233,12 +241,49 @@ class ProjectsList {
 
   constructor(type) {
     this.type = type;
-    const projectItems = document.querySelectorAll(`#${type}-projects li`);
+    const projectItems = document.querySelectorAll(`#${this.type}-projects li`);
     projectItems.forEach((p) =>
       this.projects.push(
         new ProjectItem(p.id, this.switchProject.bind(this), this.type)
       )
     );
+    this.connectDroppable();
+  }
+
+  connectDroppable() {
+    const list = document.querySelector(`#${this.type}-projects ul`);
+
+    list.addEventListener("dragenter", (event) => {
+      if (event.dataTransfer.types[0] === "text/plain") {
+        list.parentElement.classList.add("droppable");
+        event.preventDefault();
+      }
+    });
+
+    list.addEventListener("dragover", (event) => {
+      if (event.dataTransfer.types[0] === "text/plain") {
+        event.preventDefault();
+      }
+    });
+
+    list.addEventListener("dragleave", (event) => {
+      if (event.relatedTarget.closest(`#${this.type}-projects ul`) !== list) {
+        list.parentElement.classList.remove("droppable");
+      }
+    });
+
+    list.addEventListener("drop", (event) => {
+      const projectId = event.dataTransfer.getData("text/plain");
+      if (this.projects.find((p) => p.id === projectId)) {
+        return;
+      }
+      document
+        .getElementById(projectId)
+        .querySelector("button:last-of-type")
+        .click();
+      list.parentElement.classList.remove("droppable");
+      event.preventDefault(); // not required
+    });
   }
 
   setAddPjtToOtherList(addProjectToOtherListFunction) {
