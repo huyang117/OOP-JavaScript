@@ -1,5 +1,5 @@
-import { Tooltip } from './Tooltip.js';
-import { DOMUtils } from '../Utility/DOMUtils.js';
+// import { Tooltip } from "./Tooltip.js";
+import { DOMUtils } from "../Utility/DOMUtils.js";
 
 export class ProjectItem {
   constructor(id, switchProjectFunction, type) {
@@ -19,13 +19,15 @@ export class ProjectItem {
       return;
     }
     const tooltipText = this.projectItemDomEl.dataset.extraInfo;
-    const tooltip = new Tooltip(
-      () => (this.hasActiveTooltip = false),
-      tooltipText,
-      this.id
-    );
-    tooltip.attach();
-    this.hasActiveTooltip = true;
+    import("./Tooltip.js").then((module) => {
+      const tooltip = new module.Tooltip(
+        () => (this.hasActiveTooltip = false),
+        tooltipText,
+        this.id
+      );
+      tooltip.attach();
+      this.hasActiveTooltip = true;
+    });
   }
 
   connectDrag() {
