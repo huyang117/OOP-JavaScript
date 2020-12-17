@@ -1,4 +1,6 @@
-class Tooltip extends Component {
+import { Component } from './Component.js';
+
+export class Tooltip extends Component {
   constructor(tooltipClosedHandler, content, hostElementId) {
     super(hostElementId);
     // super('active-projects', true);

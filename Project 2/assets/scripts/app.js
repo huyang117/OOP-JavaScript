@@ -104,6 +104,8 @@
 
 // Practice modular programming
 
+import { ProjectsList } from './App/ProjectsList.js';
+
 class App {
   static init() {
     const activePjts = new ProjectsList("active");

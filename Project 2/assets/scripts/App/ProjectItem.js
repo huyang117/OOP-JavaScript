@@ -1,4 +1,7 @@
-class ProjectItem {
+import { Tooltip } from './Tooltip.js';
+import { DOMUtils } from '../Utility/DOMUtils.js';
+
+export class ProjectItem {
   constructor(id, switchProjectFunction, type) {
     this.id = id;
     this.projectItemDomEl = document.getElementById(this.id);

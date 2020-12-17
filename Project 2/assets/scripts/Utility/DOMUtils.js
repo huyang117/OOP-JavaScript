@@ -1,4 +1,4 @@
-class DOMUtils {
+export class DOMUtils {
   static addProjectToList(projectId, destinationSelector) {
     const projectEl = document.getElementById(projectId);
     document.querySelector(destinationSelector).append(projectEl);
