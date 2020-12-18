@@ -2,10 +2,10 @@ import { ProjectItem } from "./ProjectItem.js";
 import { DOMUtils } from "../Utility/DOMUtils.js";
 
 export class ProjectsList {
-  projects = [];
-
+  
   constructor(type) {
     this.type = type;
+    this.projects = [];
     const projectItems = document.querySelectorAll(`#${this.type}-projects li`);
     projectItems.forEach((p) =>
       this.projects.push(
