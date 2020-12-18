@@ -11,4 +11,5 @@ module.exports = {
   devServer: {
     contentBase: "./",
   },
+  devtool: "eval-cheap-module-source-map",
 };
