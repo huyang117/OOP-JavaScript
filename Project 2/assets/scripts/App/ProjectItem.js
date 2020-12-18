@@ -1,4 +1,4 @@
-// import { Tooltip } from "./Tooltip.js";
+// import { Tooltip } from './Tooltip.js';
 import { DOMUtils } from "../Utility/DOMUtils.js";
 
 export class ProjectItem {
@@ -9,7 +9,8 @@ export class ProjectItem {
     this.connectSwitchBtn(type);
     this.connectDrag();
 
-    this.switchProjectTriggered = switchProjectFunction; // receive from ProjectsList
+    // receive from ProjectsList
+    this.switchProjectTriggered = switchProjectFunction;
 
     this.hasActiveTooltip = false;
   }
@@ -19,12 +20,16 @@ export class ProjectItem {
       return;
     }
     const tooltipText = this.projectItemDomEl.dataset.extraInfo;
+
     import("./Tooltip.js").then((module) => {
       const tooltip = new module.Tooltip(
-        () => (this.hasActiveTooltip = false),
+        () => {
+          this.hasActiveTooltip = false;
+        },
         tooltipText,
         this.id
       );
+
       tooltip.attach();
       this.hasActiveTooltip = true;
     });
@@ -41,11 +46,13 @@ export class ProjectItem {
     const moreInfoBtn = this.projectItemDomEl.querySelector(
       "button:first-of-type"
     );
+
     moreInfoBtn.addEventListener("click", this.showTooltip.bind(this));
   }
 
   connectSwitchBtn(type) {
     let switchBtn = this.projectItemDomEl.querySelector("button:last-of-type");
+
     switchBtn = DOMUtils.clearEventListener(switchBtn);
     switchBtn.addEventListener("click", () =>
       this.switchProjectTriggered(this.id)
